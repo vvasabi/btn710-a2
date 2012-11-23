@@ -1,0 +1,3 @@
+[submodule "site/midnight"]
+	path = site/midnight
+	url = git://github.com/vvasabi/Midnight.git

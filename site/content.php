@@ -4,5 +4,8 @@
  *
  * @author Brad Chen
  */
-?>
-<p>Hello world!</p>
+
+$base_path = dirname(__FILE__);
+$content = $base_path . '/content.md';
+passthru('/usr/local/bin/redcarpet ' . $content);
+
