@@ -21,3 +21,7 @@ h1 {
   top: -4px;
 }
 
+.page-header .pull-right {
+  margin-top: 1.25em;
+}
+
