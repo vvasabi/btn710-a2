@@ -6,7 +6,7 @@
  */
 
 if ($_POST) {
-  if (($_POST['login'] != 'btn710') || ($_POST['password'] != 'btn710')) {
+  if (!is_login_valid()) {
     $_SESSION['ERROR'] = '<strong>Unable to log in</strong>. Please try again.';
   } else {
     $_SESSION['MESSAGE'] = '<strong>Hello!</strong> Logged in successfully.';
@@ -15,6 +15,19 @@ if ($_POST) {
 
   header('Location: ' . $_SERVER['PHP_SELF']);
   exit(0);
+}
+
+function is_login_valid() {
+  if (empty($_POST['login']) || empty($_POST['password'])) {
+    return false;
+  }
+  foreach ($_SESSION['users'] as $user) {
+    if (($user['login'] == $_POST['login'])
+          && ($user['password'] == $_POST['password'])) {
+      return true;
+    }
+  }
+  return false;
 }
 ?>
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post"

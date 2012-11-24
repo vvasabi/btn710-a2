@@ -8,6 +8,16 @@
 session_start();
 ob_start();
 
+// initialize the list of data
+if (!isset($_SESSION['users'])) {
+  $_SESSION['users'] = array(
+    array(
+      'login' => 'btn710',
+      'password' => 'btn710'
+    )
+  );
+}
+
 if (isset($_GET['logout'])) {
   $_SESSION['MESSAGE'] = '<strong>See you</strong>. Logged out successfully.';
   unset($_SESSION['LOGGED_IN']);
