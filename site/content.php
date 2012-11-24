@@ -7,5 +7,9 @@
 
 $base_path = dirname(__FILE__);
 $content = $base_path . '/content.md';
-passthru('/usr/local/bin/redcarpet ' . $content);
+if (file_exists('/usr/local/bin/redcarpet')) {
+  passthru('/usr/local/bin/redcarpet ' . $content);
+} else {
+  passthru('/usr/bin/env redcarpet ' . $content);
+}
 
