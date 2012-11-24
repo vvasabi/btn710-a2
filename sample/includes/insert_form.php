@@ -13,6 +13,8 @@ if ($_POST) {
     ));
     $_SESSION['MESSAGE'] = '<strong>Success!</strong> User has been added.';
   }
+
+  generate_csrf_token();
   header('Location: ' . $_SERVER['PHP_SELF']);
   exit(0);
 }
@@ -53,6 +55,10 @@ function is_input_valid() {
 
     <div class="control-group">
       <div class="controls">
+        <?php if (isset($_SESSION['CSRF_PROTECTION'])) : ?>
+          <input type="hidden" name="token"
+            value="<?php echo $_SESSION['CSRF_TOKEN']; ?>" />
+        <?php endif; ?>
         <button type="submit" class="btn btn-primary">Submit</button>
       </div>
     </div>

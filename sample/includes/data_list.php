@@ -6,6 +6,8 @@
  */
 
 if (isset($_GET['delete'])) {
+  check_csrf_attack(isset($_GET['token']) ? $_GET['token'] : null);
+
   $id = intval($_GET['delete']);
   if (isset($_SESSION['users'][$id])) {
     unset($_SESSION['users'][$id]);
@@ -15,6 +17,8 @@ if (isset($_GET['delete'])) {
     $_SESSION['ERROR'] = '<strong>Error!</strong> '
       . 'The user could not be found.';
   }
+
+  generate_csrf_token();
   header('Location: ' . $_SERVER['PHP_SELF']);
   exit(0);
 }
@@ -24,7 +28,13 @@ if (isset($_GET['delete'])) {
 jQuery(function() {
   jQuery('button.remove').click(function() {
     var id = jQuery(this).data('id');
-    window.location = '<?php echo $_SERVER['PHP_SELF']; ?>?delete=' + id;
+    if (jQuery('input[name="token"]').size()) {
+      var token = jQuery('input[name="token"]').val();
+      window.location = '<?php echo $_SERVER['PHP_SELF']; ?>?delete=' + id
+        + '&token=' + token;
+    } else {
+      window.location = '<?php echo $_SERVER['PHP_SELF']; ?>?delete=' + id;
+    }
   });
 });
 // ]]>

@@ -4,37 +4,16 @@
  *
  * @author Brad Chen
  */
-
-session_start();
-ob_start();
-
-// initialize the list of data
-if (!isset($_SESSION['users'])) {
-  $_SESSION['users'] = array(
-    array(
-      'login' => 'btn710',
-      'password' => 'btn710'
-    )
-  );
-}
-
-if (isset($_GET['logout'])) {
-  $_SESSION['MESSAGE'] = '<strong>See you</strong>. Logged out successfully.';
-  unset($_SESSION['LOGGED_IN']);
-  header('Location: ' . $_SERVER['PHP_SELF']);
-  exit(0);
-}
-
-$error = isset($_SESSION['ERROR']) ? $_SESSION['ERROR'] : null;
-$message = isset($_SESSION['MESSAGE']) ? $_SESSION['MESSAGE'] : null;
-unset($_SESSION['ERROR']);
-unset($_SESSION['MESSAGE']);
 ?>
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>A Naïve Data Entry Site</title>
+    <?php if (isset($_SESSION['CSRF_PROTECTION'])) : ?>
+      <title>A Secure Data Entry Site Protected Against CSRF</title>
+    <?php else : ?>
+      <title>A Naïve Data Entry Site</title>
+    <?php endif; ?>
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css" type="text/css" />
     <link rel="stylesheet" href="styles.css" type="text/css" />
@@ -45,11 +24,28 @@ unset($_SESSION['MESSAGE']);
     <div class="container">
       <div class="page-header">
         <?php if (isset($_SESSION['LOGGED_IN'])) : ?>
-          <a href="<?php echo $_SERVER['PHP_SELF']; ?>?logout"
-            class="pull-right">Log out</a>
+          <div class="pull-right">
+            <?php if (preg_match('/\/index\.php$/', $_SERVER['PHP_SELF'])) : ?>
+              <strong>Home</strong>
+            <?php else : ?>
+              <a href="index.php">Home</a>
+            <?php endif; ?> |
+
+            <?php if (preg_match('/\/setting\.php$/', $_SERVER['PHP_SELF'])) : ?>
+              <strong>Setting</strong>
+            <?php else : ?>
+              <a href="setting.php">Setting</a>
+            <?php endif; ?> |
+
+            <a href="<?php echo $_SERVER['PHP_SELF']; ?>?logout">Log out</a>
+          </div>
         <?php endif; ?>
 
-        <h1>A Naïve Data Entry Site</h1>
+        <?php if (isset($_SESSION['CSRF_PROTECTION'])) : ?>
+          <h1>A Secure Data Entry Site</h1>
+        <?php else : ?>
+          <h1>A Naïve Data Entry Site</h1>
+        <?php endif; ?>
       </div>
 
       <?php if ($error) : ?>

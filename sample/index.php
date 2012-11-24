@@ -6,6 +6,7 @@
  */
 
 define('BASE_PATH', dirname(__FILE__));
+include BASE_PATH . '/includes/common.php';
 ?>
 <?php include BASE_PATH . '/includes/header.php'; ?>
 <?php if (isset($_SESSION['LOGGED_IN'])) : ?>

@@ -13,6 +13,7 @@ if ($_POST) {
     $_SESSION['LOGGED_IN'] = true;
   }
 
+  generate_csrf_token();
   header('Location: ' . $_SERVER['PHP_SELF']);
   exit(0);
 }
@@ -54,6 +55,10 @@ function is_login_valid() {
 
     <div class="control-group">
       <div class="controls">
+        <?php if (isset($_SESSION['CSRF_PROTECTION'])) : ?>
+          <input type="hidden" name="token"
+            value="<?php echo $_SESSION['CSRF_TOKEN']; ?>" />
+        <?php endif; ?>
         <button type="submit" class="btn btn-primary">Sign in</button>
       </div>
     </div>
