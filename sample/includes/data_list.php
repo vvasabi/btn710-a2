@@ -53,8 +53,8 @@ jQuery(function() {
     <?php foreach ($_SESSION['users'] as $i => $user) : ?> 
       <tr>
         <td><?php echo $i + 1; ?></td>
-        <td><?php echo $user['login']; ?></td>
-        <td><?php echo $user['password']; ?></td>
+        <td><?php echo htmlspecialchars($user['login']); ?></td>
+        <td><?php echo htmlspecialchars($user['password']); ?></td>
         <td>
           <button class="btn remove" data-id="<?php echo $i; ?>"><i
             class="icon-remove"></i> Delete</button>
