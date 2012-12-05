@@ -7,5 +7,5 @@
 
 $base_path = dirname(__FILE__);
 $content = $base_path . '/content.md';
-passthru('/usr/local/bin/redcarpet ' . $content);
+passthru($base_path . '/markdown.rb ' . $content);
 
