@@ -8,12 +8,18 @@
 if (isset($_GET['delete'])) {
   check_csrf_attack(isset($_GET['token']) ? $_GET['token'] : null);
 
-  $id = intval($_GET['delete']);
-  if (isset($_SESSION['users'][$id])) {
-    unset($_SESSION['users'][$id]);
-    $_SESSION['MESSAGE'] = '<strong>Success!</strong> '
-      . 'The user has been deleted.';
-  } else {
+  $login = $_GET['delete'];
+  $found = false;
+  foreach ($_SESSION['users'] as $i => $user) {
+    if ($user['login'] == $login) {
+      unset($_SESSION['users'][$i]);
+      $_SESSION['MESSAGE'] = '<strong>Success!</strong> '
+        . 'The user has been deleted.';
+      $found = true;
+      break;
+    }
+  }
+  if (!$found) {
     $_SESSION['ERROR'] = '<strong>Error!</strong> '
       . 'The user could not be found.';
   }
@@ -27,13 +33,13 @@ if (isset($_GET['delete'])) {
 // <![CDATA[
 jQuery(function() {
   jQuery('button.remove').click(function() {
-    var id = jQuery(this).data('id');
+    var login = jQuery(this).data('login');
     if (jQuery('input[name="token"]').size()) {
       var token = jQuery('input[name="token"]').val();
-      window.location = '<?php echo $_SERVER['PHP_SELF']; ?>?delete=' + id
+      window.location = '<?php echo $_SERVER['PHP_SELF']; ?>?delete=' + login 
         + '&token=' + token;
     } else {
-      window.location = '<?php echo $_SERVER['PHP_SELF']; ?>?delete=' + id;
+      window.location = '<?php echo $_SERVER['PHP_SELF']; ?>?delete=' + login;
     }
   });
 });
@@ -56,7 +62,8 @@ jQuery(function() {
         <td><?php echo htmlspecialchars($user['login']); ?></td>
         <td><?php echo htmlspecialchars($user['password']); ?></td>
         <td>
-          <button class="btn remove" data-id="<?php echo $i; ?>"><i
+          <button class="btn remove"
+            data-login="<?php echo urlencode($user['login']); ?>"><i
             class="icon-remove"></i> Delete</button>
         </td>
       </tr>
