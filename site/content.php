@@ -8,4 +8,4 @@
 $base_path = dirname(__FILE__);
 $content = $base_path . '/content.md';
 
-passthru($base_path . '/markdown.rb ' . $content);
+passthru("'$base_path/markdown.rb' '$content'");
