@@ -2,9 +2,15 @@
 
 This document covers the vulnerability known as **Cross-Site Request Forgery** or CSRF. Other names for this type of attack are **one-click attack** and **session riding**. The goal of the attack is to trick the victim into performing an action that will covertly run malicious code that performs unwanted actions on another website on which the victim holds an active user-session. Examples of attacks range from making malicious forum posts on a user’s personal blog or forum to causing the user to make unwanted online money transfers through their active online banking session.
 
-## Prerequisites for Attack
+## Prerequisites for a Successful Attack
 
-Many web applications nowadays use cookies to store user sessions, so web applications can be used without users constantly having to log in. CSRF attack exploits this feature and uses active login sessions of victims to attack web applications. As Figure 1 shows, cookies created by web applications are often stored by browsers for a certain amount of time, which can range from hours to months. During the active session, if users visit any malicious site, the CSRF attack code would, without victims’ consent or notice, submit HTTP requests to target web applications and modify data stored. In essence, CSRF vulnerability allows attacker to create a malicious website that forges web requests to attack another website, hence the name—Cross Site Request Forgery.
+To perform a successful attack a user must in some way initiate the attack, such as requesting a web page, clicking a link or hovering their mouse over an area, while having an active session open with the website that the attack is targeting. These attacks often target high traffic websites whose users tend to leave themselves logged in either indefinitely or for prolonged periods of time, since this user behaviour results in a much higher volume of successful attacks.
+
+One other requirement of an attack to be successful is that the user must access the attacking code using the same browser which holds their active session with the target website. This is because the attack relies on the cookie the browser generates for an active user session with the target website, which holds the session data. This cookie is only accessible by the same browser that generated it so the attack must be initiated from the same browser to take advantage of the user session that the specific browser has made with the target website.
+
+## How does the attack work?
+
+Many web applications nowadays use cookies to store user sessions, so web applications can be used without users constantly having to log in. CSRF attack exploits this feature and uses active login sessions of victims to attack web applications. As Figure 1 shows, cookies created by web applications are often stored by browsers for a certain amount of time, which can range from hours to months. During the active session, if users visit any malicious site, the CSRF attack code would, without victims’ consent or notice, submit HTTP requests to target web applications and modify data stored. In essence, CSRF vulnerability allows attackers to create a malicious website that forges web requests to attack another website, hence the name—Cross Site Request Forgery.
 
 ![CSRF Attack](images/attack.jpg) Figure 1: How CSRF Works
 
@@ -68,12 +74,6 @@ After gaining access to a web application, hackers can easily analyze how web re
 
 To launch CSRF attack, victims need to open webpages created by attackers, or, at the very least, visit a webpage with the malicious `<img>` or `<iframe>` tag. The former can be done by social engineering, phishing, search engine poisoning, DNS poisoning and more. The latter can be done using XSS and infect popular websites with such vulnerability.
 
-## Prerequisites for a Successful Attack
-
-To perform a successful attack a user must in some way initiate the attack, such as requesting a web page, clicking a link or hovering their mouse over an area, while having an active session open with the website that the attack is targeting. These attacks often target high traffic websites whose users tend to leave themselves logged in either indefinitely or for prolonged periods of time, since this user behaviour results in a much higher volume of successful attacks.
-
-One other requirement of an attack to be successful is that the user must access the attacking code using the same browser which holds their active session with the target website. This is because the attack relies on the cookie the browser generates for an active user session with the target website, which holds the session data. This cookie is only accessible by the same browser that generated it so the attack must be initiated from the same browser to take advantage of the user session that the specific browser has made with the target website.
-
 ## Threats
 
 As mentioned previously there are many kinds of attacks that can be performed with CSRF, ranging from minor annoyances to life altering events. As people’s real lives become more and more intertwined with their online presence and personas, CSRF attacks will pose much larger threats to their quality of living. Attackers targeting vulnerable websites that store user data such as email, banking info, billing info, or private photos can then use the vulnerability to make unwanted actions on these sites. These actions have a very real effect on people’s lives, since these websites act as a proxy for the person whom they belong to. Actions like sending threatening or nuisance emails to contacts, transferring money from one account into another, or purchasing items from e-commerce websites all impact the person whose account was manipulated into doing so.
@@ -84,7 +84,7 @@ While it is very easy to launch a CSRF attack, it is not difficult to defend aga
 
 ### Token-Based
 
-Token-based CSRF protection, in essence, adds a random token to a web form and verifies it after the web form is submitted. Since attackers do not have a way to determine the values of the tokens that users receive from the target, this protection gives web applications the ability to verify the authenticity of web requests received. As Figure 2 shows, Attempt to launch a CSRF attack without a valid token by the malicious site would be blocked.
+Token-based CSRF protection, in essence, adds a random token to a web form and verifies it after the web form is submitted. Since attackers do not have a way to determine the values of the tokens that users receive from the target, this protection gives web applications the ability to verify the authenticity of web requests received. As Figure 2 shows, attempts to launch a CSRF attack without a valid token by the malicious site would be blocked.
 
 ![Token-Based Protection](images/protection.jpg) Figure 2: How Token-Based Protection Works
 
@@ -124,7 +124,7 @@ Aside from the two main types of CSRF protections, there are a few other types o
 
 ## Dynamic CSRF Variant
 
-While the CSRF examples discussed above are static, a dynamic variant exists. This type of CSRF attack tries to guess the random token by sending a large number of requests. As such, it is important to ensure the randomness of protection tokens and limit their lifetime, in order to defeat such attack.
+While the CSRF examples discussed above are static, a dynamic variant exists. This type of CSRF attack tries to guess the random token by sending a large number of requests. As such, it is important to ensure the randomness of protection tokens and limit their lifetime, in order to defeat such an attack.
 
 ## Well Known Examples of this Attack
 
@@ -140,7 +140,7 @@ One last example of the CSRF attack was seen happening on Twitter in 2009, when 
 
 ## Conclusion
 
-As this report illustrates, CSRF is a dangerous vulnerability, as such attack can be easily created and can result in serious damages. Fortunately, CSRF vulnerability is not difficult to counter, as many web frameworks now have built-in defense against it, and security filters are also available for defending existing web applications. It is therefore important for developers and system administrators to learn about CSRF and take the time to ensure the security of web applications.
+As this report illustrates, CSRF is a dangerous vulnerability, as such attacks can be easily created and can result in serious damages. Fortunately, CSRF vulnerability is not difficult to counter, as many web frameworks now have built-in defense against it, and security filters are also available for defending existing web applications. It is therefore important for developers and system administrators to learn about CSRF and take the time to ensure the security of web applications.
 
 ## Links
 
