@@ -67,7 +67,7 @@ function pbkdf2($algorithm, $password, $salt, $count, $key_length, $raw_output =
     <script type="text/javascript">
     jQuery(function() {
       var container = jQuery('#content');
-      var passphrase = prompt('Please enter the password.');
+      var passphrase = prompt('Please enter the password.', '');
       if (!passphrase) {
         container.append('<h1>Access Denied</h1>'
           + '<p>No password has been entered. '
@@ -87,7 +87,15 @@ function pbkdf2($algorithm, $password, $salt, $count, $key_length, $raw_output =
         padding: CryptoJS.pad.Pkcs7,
         iv: iv
       });
-      if (decrypted.sigBytes <= 0) {
+      var decryptedString = null;
+      try {
+        if (decrypted.sigBytes > 0) {
+          decryptedString = decrypted.toString(CryptoJS.enc.Utf8);
+        }
+      } catch (e) {
+        // do nothing
+      }
+      if (!decryptedString) {
         container.append('<h1>Access Denied</h1>'
           + '<p>Incorrect password has been entered. '
           + 'No content shall be revealed.</p>');
